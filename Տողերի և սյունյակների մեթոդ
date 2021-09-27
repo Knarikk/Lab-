@@ -1,0 +1,74 @@
+#include <iostream>
+#include<vector>
+#include<iomanip>
+#include<cstring>
+using namespace std;
+
+ int main()
+    {
+       char a[50][50];char b[50];char c[50][50]; int n,j; string s;
+         
+         cin>>n;
+         cout<<"Enter the line-> ";
+          for(int i=0;i<n;i++)
+     {
+          cin>>s[i];
+       
+     }
+   
+     
+     cout<<endl;
+     int k=0;
+     for(int i=0;i<3;i++)
+     {  
+           for(int j=0;j<3;j++)
+           {
+             a[i][j]=s[k];
+               k++;
+           }
+         
+         }
+   
+for(int i=0;i<3;i++)
+     {
+         for(int j=0;j<3;j++)
+         {
+             cout<<setw(5)<<a[i][j]<<" ";
+         }
+         cout<<endl;
+ 
+    }
+    cout<<endl;
+
+   for(int j=0;j<3;j++)
+     {
+         for(int i=0;i<3;i++)
+         {
+           
+          b[i]=a[i][j];
+          cout<<b[i]<<" ";
+           
+         }
+         
+     }
+     cout<<endl;
+     cout<<endl;
+     //dkod
+    int t=0;
+    for(int i=0;i<3;i++)
+   
+     {
+         for(int j=0;j<3;j++)
+         {
+             c[i][j]=b[t];
+             t++;
+             cout<<setw(5)<<c[i][j]<<" ";
+             
+         }
+         
+         cout<<endl;
+     }
+     
+     
+     
+    }
