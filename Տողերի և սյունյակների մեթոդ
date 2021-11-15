@@ -1,74 +1,88 @@
+//4.toxeri ev syuneri metod
+//Header file
 #include <iostream>
-#include<vector>
-#include<iomanip>
-#include<cstring>
-using namespace std;
+char* encrypt(char* b, int m); 
+//cpp
+#include <iostream>
+#include "header.h"
+using std::cout;
+char* encrypt(char* b, int m)
+{
+	int		i;
+	int		j;
+	int		k;
+	int		s;
+	int		h;
+	char* ptr;
+	char* str;
 
- int main()
-    {
-       char a[50][50];char b[50];char c[50][50]; int n,j; string s;
-         
-         cin>>n;
-         cout<<"Enter the line-> ";
-          for(int i=0;i<n;i++)
-     {
-          cin>>s[i];
-       
-     }
-   
-     
-     cout<<endl;
-     int k=0;
-     for(int i=0;i<3;i++)
-     {  
-           for(int j=0;j<3;j++)
-           {
-             a[i][j]=s[k];
-               k++;
-           }
-         
-         }
-   
-for(int i=0;i<3;i++)
-     {
-         for(int j=0;j<3;j++)
-         {
-             cout<<setw(5)<<a[i][j]<<" ";
-         }
-         cout<<endl;
- 
-    }
-    cout<<endl;
+	i = 0;
+	s = 0;
+	h = 0;
+	while (b[i])
+		i++;
+	str = new char[i];
+	i = i + 1 - (m * m);
+	ptr = new char[m * m];
+	while (i >= 0)
+	{
+		for (j = 0; j < m; j++)
+			for (k = 0; k < m; k++)
+			{
+				*(ptr + j * m + k) = b[s];
+				s++;
+			}
+		for (j = 0; j < m; j++)
+		{
+			for (k = 0; k < m; k++)
+				cout << *(ptr + j * m + k) << " ";
+			cout << "\n";
+		}
+		for (j = 0; j < m; j++)
+			for (k = 0; k < m; k++)
+			{
+				str[h] = *(ptr + k * m + j);
+				h++;
+			}
+		i = i - (m * m);
+	}
+	while (b[h])
+	{
+		str[h] = b[h];
+		h++;
+	}
+	str[h] = '\0';
+	delete[] ptr;
+	return (str);
+}
+//main
+#include <iostream>
+#include "header.h"
 
-   for(int j=0;j<3;j++)
-     {
-         for(int i=0;i<3;i++)
-         {
-           
-          b[i]=a[i][j];
-          cout<<b[i]<<" ";
-           
-         }
-         
-     }
-     cout<<endl;
-     cout<<endl;
-     //dkod
-    int t=0;
-    for(int i=0;i<3;i++)
-   
-     {
-         for(int j=0;j<3;j++)
-         {
-             c[i][j]=b[t];
-             t++;
-             cout<<setw(5)<<c[i][j]<<" ";
-             
-         }
-         
-         cout<<endl;
-     }
-     
-     
-     
-    }
+int	main()
+{
+	char		a[50] = "1234567891011";
+	int			n;
+	char* p;
+	int			i;
+
+	i = 0;
+	std::cout << "Enter the key \n";
+	std::cin >> n;
+	std::cout << "Encrypt this text\n";
+	while (a[i])
+	{
+		std::cout << a[i];
+		i++;
+	}
+	std::cout << "\n";
+
+	p = encrypt(a, n);
+	std::cout << "Here is encrypted text \n";
+	while (*p)
+	{
+		std::cout << *p;
+		p++;
+	}
+	std::cout << "\n";
+}
