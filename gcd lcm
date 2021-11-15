@@ -1,0 +1,98 @@
+//1. Header file
+int gcd(int a, int b);
+void LeastCommonMultiple(int a, int b);
+//cpp
+#include <iostream>
+#include"Header.h"
+using namespace std;
+//Greatest Common Divisor
+// Recursive function to return gcd of a and b
+int gcd(int a, int b)
+{
+    // Everything divides 0
+    if (a == 0)
+        return b;
+    if (b == 0)
+        return a;
+
+    // base case
+    if (a == b)
+        return a;
+
+    // a is greater
+    if (a > b)
+        return gcd(a - b, b);
+    return gcd(a, b - a);
+}
+
+
+void LeastCommonMultiple(int a, int b)
+{
+    int lcm;
+    if (a > b)
+        lcm = a;
+    else
+        lcm = b;
+    while (true)
+    {
+        if (lcm % a == 0 && lcm % b == 0)
+        {
+            cout << "The LCM of " << a << " and " << b << " is " << lcm;
+            break;
+        }
+        lcm++;
+    }
+}
+// main
+#include"header.h"
+#include <iostream>
+using namespace std;
+int main()
+{
+    int a = 44, b = 16;
+    cout << "GCD of " << a << " and " << b << " is " << gcd(a, b) << endl;
+    LeastCommonMultiple(a, b);
+    return 0;
+}
+//Ayl tarberak
+#include <iostream>
+using std::cout;
+using std::cin;
+
+int SmallestCommonMultiple(int x, int y)
+{
+    bool	t;
+    int		i;
+
+    t = true;
+    if (x % y == 0)
+        return x;
+    i = x * 2;
+    while (t)
+    {
+        if (i % x == 0 && i % y == 0)
+            return i;
+        i++;
+    }
+}
+
+int largestCommonDivisor(int x, int y)
+{
+    int	i;
+    if (y % x == 0)
+        return x;
+    i = x / 2;
+    while (i >= 1)
+    {
+        if (x % i == 0 && y % i == 0)
+            return i;
+        i--;
+    }
+}
+
+int main()
+{
+
+    cout << SmallestCommonMultiple(5, 10) << std::endl;
+    cout << largestCommonDivisor(4, 5);
+}
