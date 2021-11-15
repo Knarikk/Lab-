@@ -1,0 +1,50 @@
+//5.rle
+#include <iostream>
+#include <stdlib.h>
+
+using std::cout;
+using std::cin;
+char* rle(char* input, size_t inputsize, size_t outputsize)
+{
+	int i;
+	int k;
+	int j;
+	char* out;
+	char num[4] = {};
+
+	i = 0;
+	k = 0;
+	j = 0;
+	out = new char[outputsize];
+	while (input[i])
+	{
+		k = 0;
+		while (input[i] == input[i + 1] && k < 253)
+		{
+			k++;
+			i++;
+		}
+		out[j] = input[i];
+		k++;
+		_itoa_s(k, num, 10);
+		k = 0;
+		while (num[k])
+		{
+			out[j + 1] = num[k];
+			j++;
+			k++;
+		}
+		j++;
+		i++;
+	}
+	out[j] = '\0';
+	return (out);
+}
+int main()
+{
+	char str[100] = "aaaaaaaaaaabbb fffcccccccccccccccccccccccccccccccccccccccccccccccccccccccccc";
+	char* pstr;
+	cout << str << "\n";
+	pstr = rle(str, strlen(str), 2 * strlen(str));
+	cout << pstr;
+}
