@@ -1,0 +1,98 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+	string str = "The compression and the impression. decompression leave an  Hahahahaha!";
+	string s, a=" ";
+	int count,length,i,j,k,z,d,o=0,m,v,n,h,c,x;
+	char b[8];
+	s = str;
+	cout << s <<endl;
+	length = str.size();
+	h = length;
+	count = length / 2;
+	if (length % 2 != 0)
+		count++;
+	cout << length << " " << count << "\n";
+	while (count > 5)
+	{
+		i = 0;
+		while (i <= length )
+		{
+			if (i + count > length)
+				break;
+			else
+			{
+				a.clear();
+				for (j = i; j < i + count; j++) // stanuma toxy vory petq e hamemati
+					a.push_back(s[j]);
+			}
+			//cout << a /*<< " "<<i<<" "<<j<< " "<<length<<" "<<count*/<<"\n";
+			for (j = i + count; j <= length; j++) //stugi krknvoxy
+			{
+				k = j;
+				if (j > h)
+					k += o;
+				z = 0;
+				if (k!=i)
+				{
+					while (z < count)
+					{
+						if (s[k] != a[z])
+							break;
+						z++;
+						k++;
+					}
+				}
+				if (z == count)
+				{
+					d = j;
+					if (j < h)
+						h = j;
+						
+					if (i > h)
+					{
+						i -= o;
+						d += o;
+					}
+						_itoa_s(i + 1, b, 10);
+						s[d] = '[';
+						n = 0;
+						while (b[n])
+						{
+							s[++d] = b[n];
+							n++;
+							m = n;
+						}
+						s[++d] = '|';
+						_itoa_s(count, b, 10);
+						n = 0;
+						while (b[n])
+						{
+							s[++d] = b[n];
+							n++;
+							v = n;
+						}
+						s[++d] = ']';
+						k = j + count;
+						if (i > h)
+							k += o;
+						while (s[k])
+						{
+							s[++d] = s[k];
+							k++;
+						}
+						s[++d] = '\0';
+
+						s.resize( s.size()-(count-(5+(m-1)+(v-1))));
+						o = o - (count - (5 + (m - 1) + (v - 1)));
+					length = s.size();
+				}
+			}
+			i++;
+		}
+		count--;
+	}
+	cout << s << "\n";
+}
