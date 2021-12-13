@@ -1,0 +1,556 @@
+//Funcs.h
+#pragma once
+#include <iostream>
+#include <vector>
+using namespace std;
+
+char* encrypt(string b, int m)
+{
+	int		i;
+	int		j;
+	int		k;
+	int		s;
+	int		h;
+	char* ptr;
+	char* str;
+
+	i = 0;
+	s = 0;
+	h = 0;
+	while (b[i])
+		i++;
+	str = new char[i];
+	i = i + 1 - (m * m);
+	ptr = new char[m * m];
+	while (i >= 0)
+	{
+		for (j = 0; j < m; j++)
+			for (k = 0; k < m; k++)
+			{
+				*(ptr + j * m + k) = b[s];
+				s++;
+			}
+
+		for (j = 0; j < m; j++)
+			for (k = 0; k < m; k++)
+			{
+				str[h] = *(ptr + k * m + j);
+				h++;
+			}
+		i = i - (m * m);
+	}
+	while (b[h])
+	{
+		str[h] = b[h];
+		h++;
+	}
+	str[h] = '\0';
+	delete[] ptr;
+	return (str);
+}
+
+char* rle(string input, size_t inputsize, size_t outputsize)
+{
+	int i;
+	int k;
+	int j;
+	char* out;
+	char num[4] = {};
+
+	i = 0;
+	k = 0;
+	j = 0;
+	out = new char[outputsize];
+	while (input[i])
+	{
+		k = 0;
+		while (input[i] == input[i + 1] && k < 254)
+		{
+			k++;
+			i++;
+		}
+		out[j] = input[i];
+		k++;
+		_itoa_s(k, num, 10);
+		k = 0;
+		while (num[k])
+		{
+			out[j + 1] = num[k];
+			j++;
+			k++;
+		}
+		j++;
+		i++;
+	}
+	out[j] = '\0';
+	return (out);
+}
+
+// shablon
+vector<char> arr1;
+vector<char> arr2;
+void arr(int n=5)
+{
+	char ch;
+
+	for (ch = 97; ch <= 122; ch++)
+	{
+		arr1.push_back(ch);
+
+	}
+	/*for (int i = 0; i < arr1.size(); i++)
+	{
+		cout << arr1[i] << " ";
+	}
+	cout << endl;*/
+
+	for (ch = 97 + n; ch <= 122; ch++)
+	{
+		arr2.push_back(ch);
+
+	}
+	for (ch = 97; ch < 97 + n; ch++)
+	{
+		arr2.push_back(ch);
+
+	}
+	/*for (int i = 0; i < arr2.size(); i++)
+	{
+		cout << arr2[i] << " ";
+	}
+	cout << endl;*/
+}
+string nkod(string h)
+{
+	bool tg;
+	bool ts;
+	int j=0;
+	string e = h;
+	arr();
+	while (e[j])
+	{
+		tg = false;
+		ts = false;
+		int i;
+		if (e[j] >= 97 && e[j] <= 122)
+			ts = true;
+		else
+			if (e[j] >= 65 && e[j] < 91)
+			{
+				tg = true;
+				e[j] = e[j] + 32;
+			}
+		if (ts || tg)
+			for (i = 0; i < arr1.size(); i++)
+				if ((e[j]) == arr1[i])
+				{
+					e[j] = arr2[i];
+					break;
+				}
+		if (tg)
+			e[j] = e[j] - 32;
+		j++;
+	}
+	return (e);
+}
+
+string word(const int i, const int count, const string& s)
+{
+	string a;
+	int j;
+	for (j = i; j < i + count; j++)
+		a.push_back(s[j]);
+	return a;
+}
+bool check(int k, const string& s, const string& a, const int o, const int i, const int count, const int h)
+{
+	int z = 0;
+
+	if (k > h)
+		k += o;
+
+	if (k != i)
+	{
+		while (z < count)
+		{
+			if (s[k] != a[z])
+				break;
+			z++;
+			k++;
+		}
+	}
+	if (z == count)
+		return true;
+	return false;
+}
+string encode (const string& str)
+{
+	string s, a = " ";
+	int count, length, i, j, k, z, d, o = 0, m, v, n, h, c, x;
+	char b[8];
+	s = str;
+	//cout << s << endl;
+	length = str.size();
+	h = length;
+	count = length / 2;
+	if (length % 2 != 0)
+		count++;
+	while (count > 5)
+	{
+		i = 0;
+		while (i <= length)
+		{
+			if (i + count > length)
+				break;
+			else
+			{
+				a = word(i, count, s);
+			}
+
+			for (j = i + count; j <= length; j++) //stugi krknvoxy
+			{
+				if (check(j, s, a, o, i, count, h))
+				{
+					d = j;
+					if (j < h)
+						h = j;
+					else
+						d += o;
+					if (i > h)
+					{
+						i -= o;
+					}
+					_itoa_s(i + 1, b, 10);
+					s[d] = '[';
+					n = 0;
+					while (b[n])
+					{
+						s[++d] = b[n];
+						n++;
+						m = n;
+					}
+					s[++d] = '|';
+					_itoa_s(count, b, 10);
+					n = 0;
+					while (b[n])
+					{
+						s[++d] = b[n];
+						n++;
+						v = n;
+					}
+					s[++d] = ']';
+					k = j + count;
+					if (i > h || j > h)
+						k += o;
+					while (s[k])
+					{
+						s[++d] = s[k];
+						k++;
+					}
+					s[++d] = '\0';
+
+					s.resize(s.size() - (count - (5 + (m - 1) + (v - 1))));
+					o = o - (count - (5 + (m - 1) + (v - 1)));
+					length = s.size();
+				}
+			}
+			i++;
+		}
+		count--;
+	}
+	return s;
+}
+
+
+//Dfuncs.h
+#pragma once
+#include <iostream>
+#include <vector>
+#include "Funcs.h"
+using namespace std;
+
+char* decrypt(string b, int m)
+{
+	int		i;
+	int		j;
+	int		k;
+	int		s;
+	int		h;
+	char* ptr;
+	char* str;
+
+	i = 0;
+	s = 0;
+	h = 0;
+	while (b[i])
+		i++;
+	str = new char[i];
+	i = i + 1 - (m * m);
+	ptr = new char[m * m];
+	while (i >= 0)
+	{
+		for (j = 0; j < m; j++)
+			for (k = 0; k < m; k++)
+			{
+				*(ptr + j * m + k) = b[s];
+				s++;
+			}
+
+		for (j = 0; j < m; j++)
+			for (k = 0; k < m; k++)
+			{
+				str[h] = *(ptr + k * m + j);
+				h++;
+			}
+		i = i - (m * m);
+	}
+	while (b[h])
+	{
+		str[h] = b[h];
+		h++;
+	}
+	str[h] = '\0';
+	delete[] ptr;
+	return (str);
+}
+
+// shablon
+string dkod(string h)
+{
+	bool tg;
+	bool ts;
+	int j = 0;
+	string e = h;
+	arr();
+	while (e[j])
+	{
+		tg = false;
+		ts = false;
+		int i;
+		if (e[j] >= 97 && e[j] <= 122)
+			ts = true;
+		else
+			if (e[j] >= 65 && e[j] < 91)
+			{
+				tg = true;
+				e[j] = e[j] + 32;
+			}
+		if (ts || tg)
+			for (i = 0; i < arr2.size(); i++)
+				if ((e[j]) == arr2[i])
+				{
+					e[j] = arr1[i];
+					break;
+				}
+		if (tg)
+			e[j] = e[j] - 32;
+		j++;
+	}
+	return (e);
+}
+
+string decode(const string& s)
+{
+	string str;
+	int i = 0, k = 0, n, count, j;
+	while (s[i])
+	{
+		while (s[i] != '[' && s[i])
+		{
+			str.push_back(s[i]);
+			k++;
+			i++;
+		}
+		if (!s[i])
+			break;
+		i++;
+		n = 0;
+		count = 0;
+		while (s[i] >= '0' && s[i] <= '9')
+		{
+			n = n * 10 + s[i] - '0';
+			i++;
+		}
+		i++;
+		while (s[i] >= '0' && s[i] <= '9')
+		{
+			count = count * 10 + s[i] - '0';
+			i++;
+		}
+		i++;
+		n = n - 1;
+		for (j = 0; j < count; j++)
+		{
+			str.push_back(str[n]);
+			n++;
+		}
+	}
+	str.push_back('\n');
+	return (str);
+}
+
+string drle(string& s)
+{
+	string str;
+	int n = s.size();
+	int a, j, i, k;
+	for (i = 0; i < n; i++)
+	{
+		if (s[i] < '0' || s[i]>'9')
+			str.push_back(s[i]);
+		else
+		{
+			a = 0;
+			k = 1;
+			while (s[i] >= '0' && s[i] <= '9')
+			{
+				a = a * 10 + (s[i] - '0');
+				i++;
+				k++;
+			}
+			a--;
+			for (j = 0; j < a; j++)
+				str.push_back(s[i - k]);
+			i--;
+		}
+	}
+	str.push_back('\n');
+	return str;
+}
+
+//source
+﻿#pragma comment(lib, "ws2_32.lib")
+#include <winsock2.h>
+#include <iostream>
+#include <string>
+#include "Funcs.h"
+#include  "Dfuncs.h"
+using namespace std;
+#pragma warning(disable: 4996)
+
+SOCKET Connection;
+
+
+void ClientHandler()//այս ֆունկցիան պետք է աշխատացնել նոր հոսքի մեջ CreateThread:
+{
+	int msg_size;
+	int n_size;
+	string m;
+	string s;
+	int k = 0;
+	while (true)
+	{
+		//recv(Connection, msg, sizeof(msg), NULL);//սեռվեռից ստացվող նամակ
+		//std::cout << msg << std::endl;//արտատպել էկրանին
+		recv(Connection, (char*)&msg_size, sizeof(int), NULL);
+		char* msg = new char[msg_size + 1];
+		msg[msg_size] = '\0';
+		recv(Connection, msg, msg_size, NULL);
+		cout << msg << endl;
+		s = msg;
+		
+		if (k >= 1)
+		{
+			recv(Connection, (char*)&n_size, sizeof(int), NULL);
+			char* n = new char[n_size + 1];
+			n[n_size] = '\0';
+			recv(Connection, n, n_size, NULL);
+			switch (n[0])
+			{
+			case '1':
+				s = decrypt(s, 3);
+				std::cout << s << std::endl;
+				break;
+			case '2':
+				s = drle(s);
+				std::cout << s << std::endl;
+				break;
+			case '3':
+				s = dkod(s);
+				std::cout << s << std::endl;
+				break;
+			case '4':
+				s = decode(s);
+				std::cout << s << std::endl;
+				break;
+			}
+		}
+		delete[] msg;
+		k++;
+	}
+}
+
+
+int main(int argc, char* argv[]) {
+	//WSAStartup
+	WSAData wsaData;
+	WORD DLLVersion = MAKEWORD(2, 1);
+	if (WSAStartup(DLLVersion, &wsaData) != 0) {
+		std::cout << "Error" << std::endl;
+		exit(1);
+	}
+
+	SOCKADDR_IN addr;
+	int sizeofaddr = sizeof(addr);
+	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	addr.sin_port = htons(1111);
+	addr.sin_family = AF_INET;
+
+	Connection = socket(AF_INET, SOCK_STREAM, NULL);
+	if (connect(Connection, (SOCKADDR*)&addr, sizeof(addr)) != 0) {
+		std::cout << "Error: failed connect to server.\n";
+		return 1;
+	}
+	std::cout << "Connected!\n";
+	/*char msg[256];
+	recv(Connection, msg, sizeof(msg), NULL);
+	std::cout << msg << std::endl;*/
+
+	//մեզ էլ սերվերից պետք չի ստանալ նամակ 
+	//դա արդեն կատարում է ClientHendler-ը;
+
+
+
+
+	CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandler, NULL, NULL, NULL);
+	//4 րդ պարամետրը NULL է որովհետև ֆունկցիան պատամետրեր չի ստանում
+
+	string s;
+	std::string msg1;
+	string n;
+	while (true) {
+		std::getline(std::cin, n);
+		std::getline(std::cin, msg1);
+		
+		int msg_size = msg1.size();
+		int n_size = n.size();
+		//Encode(msg1.c_str(), buff, 1500);
+		s = msg1.c_str();
+		switch (n[0]) {
+		case '1':
+			s = encrypt(msg1.c_str(), 3);
+			std::cout << s << std::endl;
+			break;
+		case '2':
+			s = rle(msg1.c_str(), msg_size, 2 * s.size());
+			msg_size = msg_size * 2;
+			std::cout << s << std::endl;
+			break;
+		case '3':
+			s = nkod(msg1.c_str());
+			std::cout << s << std::endl;
+			break;
+		case '4':
+			s = encode(msg1.c_str());
+			std::cout << s << std::endl;
+		}
+		send(Connection, (char*)&msg_size, sizeof(int), NULL);
+		send(Connection, s.c_str(),msg_size, NULL);
+		send(Connection, (char*)&n_size, sizeof(int), NULL);
+		send(Connection, n.c_str(), n_size, NULL);
+		Sleep(10);
+	}
+
+	system("pause");
+	return 0;
+}
